@@ -23,16 +23,17 @@ class TransactionList extends StatelessWidget {
                   decoration: BoxDecoration(
                       border: Border.all(
                         width: 2,
-                        color: Colors.green,
+                        color: Theme.of(context).primaryColor,
                       ),
                       borderRadius:
                           const BorderRadius.all(Radius.circular(10))),
                   child: Text(
                     "\$ ${_userTransactions[index].amount}",
-                    style: const TextStyle(
+                    style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
-                        color: Colors.green),
+                        color: Theme.of(context).primaryColor,
+                        ),
                   ),
                 ),
                 Column(

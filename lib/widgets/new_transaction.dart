@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 
-class NewTranstaction extends StatelessWidget {
-  final titleController = TextEditingController();
-  final valueController = TextEditingController();
-
+class NewTranstaction extends StatefulWidget {
   final Function addTX;
   NewTranstaction(this.addTX, {Key key}) : super(key: key);
+
+  @override
+  State<NewTranstaction> createState() => _NewTranstactionState();
+}
+
+class _NewTranstactionState extends State<NewTranstaction> {
+  final titleController = TextEditingController();
+
+  final valueController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +44,9 @@ class NewTranstaction extends StatelessWidget {
       return;
     }
 
-    return addTX(enterdTitle, val);
+    widget.addTX(enterdTitle, val);
+    
+    Navigator.of(context).pop();
+
   }
 }
