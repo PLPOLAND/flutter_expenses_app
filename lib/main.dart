@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_expenses_app/widgets/chart.dart';
 
 import 'widgets/new_transaction.dart';
 import 'widgets/transaction_list.dart';
@@ -41,33 +42,22 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Transaction> _userTransactions = [
-    Transaction(
-        id: "t1", title: "New Shoes", amount: 69.99, date: DateTime.now()),
-    Transaction(
-        id: "t2", title: "New Phone", amount: 169.99, date: DateTime.now()),
-    Transaction(
-        id: "t3", title: "New Shoes", amount: 69.99, date: DateTime.now()),
-    Transaction(
-        id: "t6", title: "New Phone", amount: 169.99, date: DateTime.now()),
-    Transaction(
-        id: "t4", title: "New Shoes", amount: 69.99, date: DateTime.now()),
-    Transaction(
-        id: "t5", title: "New Phone", amount: 169.99, date: DateTime.now()),
-    Transaction(
-        id: "t8", title: "New Shoes", amount: 69.99, date: DateTime.now()),
-    Transaction(
-        id: "t7", title: "New Phone", amount: 169.99, date: DateTime.now()),
-  ];
+  final List<Transaction> _userTransactions = [];
 
-  void _addNewTransaction(String title, double amount) {
+  void _addNewTransaction(String title, double amount, DateTime date) {
     final newTX = Transaction(
         id: DateTime.now().toString(),
         title: title,
         amount: amount,
-        date: DateTime.now());
+        date: date);
     setState(() {
       _userTransactions.add(newTX);
+    });
+  }
+
+  void _deleteTransaction(String id){
+    setState(() {
+      _userTransactions.removeWhere((tx) => tx.id == id);
     });
   }
 
@@ -83,6 +73,10 @@ class _MyHomePageState extends State<MyHomePage> {
         });
   }
 
+  List<Transaction> get _recentTransactions{
+    return _userTransactions.where((element) => element.date.isAfter(DateTime.now().subtract(Duration(days: 7)))).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -96,11 +90,10 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Card(
-              child: Text("Chart"),
-            ),
-            TransactionList(_userTransactions),
+            Chart(_recentTransactions),
+            TransactionList(_userTransactions, _deleteTransaction),
           ],
         ),
       ),
