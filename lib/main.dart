@@ -20,17 +20,17 @@ class MyAPP extends StatelessWidget {
     return MaterialApp(
       home: MyHomePage(),
       theme: ThemeData(
-          primarySwatch: Colors.pink,
-          accentColor: Colors.amber,
-          fontFamily: "QuickSand",
-          textTheme: ThemeData.light().textTheme.copyWith(
-            headline6: const TextStyle(
-              fontFamily: 'OpenSans',
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
+        primarySwatch: Colors.pink,
+        accentColor: Colors.amber,
+        fontFamily: "QuickSand",
+        textTheme: ThemeData.light().textTheme.copyWith(
+              headline6: const TextStyle(
+                fontFamily: 'OpenSans',
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
-          ),
+      ),
       title: 'Personal Expenses',
     );
   }
@@ -55,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void _deleteTransaction(String id){
+  void _deleteTransaction(String id) {
     setState(() {
       _userTransactions.removeWhere((tx) => tx.id == id);
     });
@@ -73,27 +73,41 @@ class _MyHomePageState extends State<MyHomePage> {
         });
   }
 
-  List<Transaction> get _recentTransactions{
-    return _userTransactions.where((element) => element.date.isAfter(DateTime.now().subtract(Duration(days: 7)))).toList();
+  List<Transaction> get _recentTransactions {
+    return _userTransactions
+        .where((element) =>
+            element.date.isAfter(DateTime.now().subtract(Duration(days: 7))))
+        .toList();
   }
 
   @override
   Widget build(BuildContext context) {
+    var appBar2 = AppBar(
+      title: const Text("Planer wydatków"),
+      actions: [
+        IconButton(
+            onPressed: () => _startAddNewTransaction(context),
+            icon: const Icon(Icons.add))
+      ],
+    );
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Planer wydatków"),
-        actions: [
-          IconButton(
-              onPressed: () => _startAddNewTransaction(context),
-              icon: const Icon(Icons.add))
-        ],
-      ),
+      appBar: appBar2,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Chart(_recentTransactions),
-            TransactionList(_userTransactions, _deleteTransaction),
+            Container(
+              child: Chart(_recentTransactions),
+              height: (MediaQuery.of(context).size.height -
+                      appBar2.preferredSize.height - MediaQuery.of(context).padding.top) *
+                  0.3,
+            ),
+            Container(
+              child: TransactionList(_userTransactions, _deleteTransaction),
+              height: (MediaQuery.of(context).size.height -
+                      appBar2.preferredSize.height - MediaQuery.of(context).padding.top) *
+                  0.7,
+            ),
           ],
         ),
       ),
