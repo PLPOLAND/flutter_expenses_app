@@ -33,37 +33,39 @@ class _NewTranstactionState extends State<NewTranstaction> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          TextField(
-            controller: _titleController,
-            decoration: const InputDecoration(hintText: "Title"),
-            onSubmitted: (_) =>
-                _submitData(), // "podłoga "sygnalzuje, że nie używam tego co dostaję w argumencie""
-          ),
-          TextField(
-            controller: _valueController,
-            decoration: const InputDecoration(hintText: "Value"),
-            keyboardType: TextInputType.numberWithOptions(decimal: true),
-            onSubmitted: (_) =>
-                _submitData(), // "podłoga "sygnalzuje, że nie używam tego co dostaję w argumencie""
-          ),
-          Row(
-            children: [
-              Expanded(child: Text(_selectedDate == null ? "No Date Choosen": "Picked: ${DateFormat.yMMMMd().format(_selectedDate)}")),
-              TextButton(
-                  onPressed: () {
-                    _presentDatePicer();
-                  },
-                  child: Text("Choose Date"))
-            ],
-          ),
-          ElevatedButton(
-              onPressed: _submitData, child: const Text("Add Transaction"))
-        ],
+    return SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: MediaQuery.of(context).viewInsets.bottom + 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            TextField(
+              controller: _titleController,
+              decoration: const InputDecoration(hintText: "Title"),
+              onSubmitted: (_) =>
+                  _submitData(), // "podłoga "sygnalzuje, że nie używam tego co dostaję w argumencie""
+            ),
+            TextField(
+              controller: _valueController,
+              decoration: const InputDecoration(hintText: "Value"),
+              keyboardType: TextInputType.numberWithOptions(decimal: true),
+              onSubmitted: (_) =>
+                  _submitData(), // "podłoga "sygnalzuje, że nie używam tego co dostaję w argumencie""
+            ),
+            Row(
+              children: [
+                Expanded(child: Text(_selectedDate == null ? "No Date Choosen": "Picked: ${DateFormat.yMMMMd().format(_selectedDate)}")),
+                TextButton(
+                    onPressed: () {
+                      _presentDatePicer();
+                    },
+                    child: Text("Choose Date"))
+              ],
+            ),
+            ElevatedButton(
+                onPressed: _submitData, child: const Text("Add Transaction"))
+          ],
+        ),
       ),
     );
   }
